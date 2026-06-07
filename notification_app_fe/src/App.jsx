@@ -1,23 +1,18 @@
-import notifications from "./data";
+import { useEffect, useState } from "react";
 
 function App() {
-  return (
-    <div style={{ padding: "20px" }}>
-      <h1>Campus Notifications</h1>
+  const [notifications, setNotifications] = useState([]);
 
-      {notifications.map((item) => (
-        <div
-          key={item.id}
-          style={{
-            border: "1px solid black",
-            padding: "10px",
-            marginBottom: "10px",
-          }}
-        >
-          <h3>{item.type}</h3>
-          <p>{item.message}</p>
-          <small>{item.timestamp}</small>
-        </div>
+  useEffect(() => {
+    fetch("http://4.224.186.213/evaluation-service/notifications")
+      .then((res) => res.json())
+      .then((data) => setNotifications(data));
+  }, []);
+
+  return (
+    <div>
+      {notifications.map((item, index) => (
+        <p key={index}>{item.message}</p>
       ))}
     </div>
   );
